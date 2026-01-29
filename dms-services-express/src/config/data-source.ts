@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { env } from "./env";
 import { Documents } from "../modules/documents/documents.entity";
+import { Folders } from "../modules/folders/folders.entity";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   password: env.DB_PASSWORD,
   database: env.DB_NAME,
 
-  entities: [Documents],
+  entities: [Documents, Folders],
   migrations: ["src/database/migrations/*.ts"],
   synchronize: false,
   logging: env.NODE_ENV === "development",

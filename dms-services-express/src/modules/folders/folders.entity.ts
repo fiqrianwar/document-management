@@ -1,0 +1,21 @@
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from "typeorm";
+
+@Entity("folders")
+export class Folders {
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
+
+  @Column({ name: "name" })
+  name!: string;
+
+  @Column({ name: "parent_id", type: "uuid", nullable: true })
+  parentId!: string | null;
+
+  @CreateDateColumn({ name: "created_at" })
+  createdAt!: Date;
+}
