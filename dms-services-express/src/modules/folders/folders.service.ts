@@ -9,6 +9,7 @@ export class FoldersService {
 
   async findAll() {
     return foldersRepository.find({
+      relations: ["children", "documents"],
       order: { createdAt: "DESC" },
     });
   }

@@ -1,22 +1,32 @@
+// documents.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  Index,
 } from "typeorm";
+import { Folders } from "../folders/folders.entity";
 
 @Entity("documents")
 export class Documents {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @Column({ name: "name" })
+  @Column()
   name!: string;
 
-  @Column({ name: "folder_id", type: "uuid", nullable: true })
-  folderId!: string | null;
+  @Index() // 🔥 important for performance
+  @ManyToOne(() => Folders, (folder) => folder.documents, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
+  @JoinColumn({ name: "folder_id" })
+  folderId?: Folders | null;
 
-  @Column({ name: "created_by", default: "" })
+  @Column({ name: "created_by" })
   createdBy!: string;
 
   @CreateDateColumn({ name: "created_at" })

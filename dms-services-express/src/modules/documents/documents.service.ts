@@ -10,6 +10,7 @@ export class DocumentService {
   async findAll() {
     return documentRepository.find({
       order: { createdAt: "DESC" },
+      relations: ["folderId"],
     });
   }
 }

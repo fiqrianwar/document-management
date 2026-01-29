@@ -1,5 +1,7 @@
+import { Folders } from "../folders/folders.entity";
+
 export interface CreateDocumentDto {
   name: string;
-  folderId?: string;
+  folderId?: Folders | null;
   createdBy: string;
 }
