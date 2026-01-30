@@ -1,4 +1,4 @@
 export type PropsHomeCTAButton = {
-  variant: "upload-files" | "add-folder";
+  typeCTA: "upload-files" | "add-folder";
   onClick: () => void;
 };

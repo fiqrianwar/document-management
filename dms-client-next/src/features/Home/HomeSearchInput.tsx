@@ -1,21 +1,13 @@
-import React from "react";
-import {
-  Button,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui";
 import { SearchIcon } from "lucide-react";
+import { InputIcon } from "@/components/ui";
 
 const HomeSearchInput = () => {
   return (
     <div>
-      <InputGroup>
-        <InputGroupInput id="inline-start-input" placeholder="Search..." />
-        <InputGroupAddon align="inline-end">
-          <SearchIcon className="text-primary" />
-        </InputGroupAddon>
-      </InputGroup>
+      <InputIcon
+        icon={<SearchIcon className="text-primary" />}
+        placeholder="Search..."
+      />
     </div>
   );
 };

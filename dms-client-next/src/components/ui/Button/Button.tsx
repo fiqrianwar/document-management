@@ -1,31 +1,17 @@
-import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
-import { type VariantProps } from "class-variance-authority";
+import { Button as ShadcnButton } from "../../primitives/Button";
+import { PropsButton } from "./types";
 
-import { cn } from "@/lib/utils";
-import { buttonVariants } from "./buttonVariant";
-
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
-  const Comp = asChild ? Slot : "button";
+const Button = ({ icon, label, onClick, variant }: PropsButton) => {
+  const isOutline = variant === "outline" ? "text-primary" : "text-white";
 
   return (
-    <Comp
-      data-slot="button"
-      data-variant={variant}
-      data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
+    <>
+      <ShadcnButton className="w-full" variant={variant} onClick={onClick}>
+        {icon}
+        <h1 className={isOutline}>{label}</h1>
+      </ShadcnButton>
+    </>
   );
-}
+};
 
 export default Button;

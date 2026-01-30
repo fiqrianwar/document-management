@@ -1,2 +1,2 @@
 export { default as Input } from "./Input";
-export * from "./InputGroup";
+export { default as InputIcon } from "./InputIcon";
