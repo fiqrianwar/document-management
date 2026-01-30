@@ -2,25 +2,15 @@
 
 import { PageContainer } from "@/components/layout";
 
-import React from "react";
 import HomeTableList from "./HomeTableList";
 import HomeSearchInput from "./HomeSearchInput";
 import HomeCTAButton from "./HomeCTAButton";
-import {
-  Button,
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Input,
-} from "@/components/primitives";
 import { Folder } from "lucide-react";
+import { useRef } from "react";
+import HomeDialogForm, { TypeRef } from "./HomeDialogForm";
 
 const Home = () => {
+  const refModal = useRef<TypeRef>(null!);
   const bodyTable = [
     {
       id: "1",
@@ -64,12 +54,12 @@ const Home = () => {
             <div className="space-y-4 md:flex md:gap-3">
               <HomeCTAButton
                 typeCTA="upload-files"
-                onClick={() => console.log("upload")}
+                onClick={() => refModal.current.handleOpenModal("upload-files")}
               />
 
               <HomeCTAButton
                 typeCTA="add-folder"
-                onClick={() => console.log("add")}
+                onClick={() => refModal.current.handleOpenModal("add-folder")}
               />
             </div>
           </div>
@@ -78,42 +68,7 @@ const Home = () => {
         </div>
       </div>
 
-      <Dialog>
-        <form>
-          <DialogTrigger asChild>
-            <Button variant="outline">Open Dialog</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-106.25">
-            <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you&apos;re
-                done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4">
-              <div className="grid gap-3">
-                {/* <Label htmlFor="name-1">Name</Label> */}
-                <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-              </div>
-              <div className="grid gap-3">
-                {/* <Label htmlFor="username-1">Username</Label> */}
-                <Input
-                  id="username-1"
-                  name="username"
-                  defaultValue="@peduarte"
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </form>
-      </Dialog>
+      <HomeDialogForm ref={refModal} />
     </PageContainer>
   );
 };

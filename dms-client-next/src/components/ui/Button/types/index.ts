@@ -7,6 +7,5 @@ export type PropsButton = {
     | "outline"
     | "secondary"
     | "ghost";
-  onClick: () => void;
   icon?: React.ReactNode;
 };
