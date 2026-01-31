@@ -1,4 +1,9 @@
+"use client";
 import { DialogForm, Input } from "@/components/ui";
+import {
+  documentsService,
+  useFetchAllDocuments,
+} from "@/services/documents/documents";
 
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -14,13 +19,15 @@ type FormValues = {
 };
 
 const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const { mutate } = useFetchAllDocuments();
 
+  const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
 
@@ -38,9 +45,13 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
   );
 
   const dialogTitle = dialogType === "upload-files" ? "Documents" : "Folders";
+  const fieldTitle = dialogType === "upload-files" ? "Document" : "Folder";
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = async (data: FormValues) => {
+    await documentsService.create(data);
+    reset();
+    mutate();
+    setOpenDialog(false);
   };
 
   return (
@@ -52,7 +63,7 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
     >
       <div className="space-y-5 p-4">
         <div className="space-y-2">
-          <h1 className="font-medium">Folder Name</h1>
+          <h1 className="font-medium">{fieldTitle} Name</h1>
           <Input {...register("name", { required: "Name is required" })} />
         </div>
 
@@ -63,7 +74,7 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
           />
         </div>
 
-        {dialogType === "upload-files" && (
+        {/* {dialogType === "upload-files" && (
           <div className="space-y-2">
             <h1 className="font-medium">Type File</h1>
             <Input
@@ -72,7 +83,7 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
               })}
             />
           </div>
-        )}
+        )} */}
       </div>
     </DialogForm>
   );
