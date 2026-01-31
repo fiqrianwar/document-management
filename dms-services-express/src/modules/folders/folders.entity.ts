@@ -7,6 +7,7 @@ import {
   OneToMany,
   ManyToOne,
   JoinColumn,
+  Index,
 } from "typeorm";
 import { Documents } from "../documents/documents.entity";
 
@@ -18,20 +19,25 @@ export class Folders {
   @Column()
   name!: string;
 
-  // Self relation (parent folder)
+  @Index()
+  @Column({ name: "parent_id", nullable: true })
+  parentId!: string | null;
+
   @ManyToOne(() => Folders, (folder) => folder.children, {
     nullable: true,
     onDelete: "SET NULL",
   })
   @JoinColumn({ name: "parent_id" })
-  parentId?: Folders | null;
+  parent!: Folders | null;
 
-  @OneToMany(() => Folders, (folder) => folder.parentId)
+  @OneToMany(() => Folders, (folder) => folder.parent)
   children!: Folders[];
 
-  // Folder → Documents
-  @OneToMany(() => Documents, (doc) => doc.folderId)
+  @OneToMany(() => Documents, (doc) => doc.folder)
   documents!: Documents[];
+
+  @Column({ name: "item_type_flag", default: "F" })
+  itemTypeFlag!: string;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

@@ -18,16 +18,26 @@ export class Documents {
   @Column()
   name!: string;
 
-  @Index() // 🔥 important for performance
+  @Index()
+  @Column({ name: "folder_id", nullable: true })
+  folderId!: string | null;
+
+  @Index()
   @ManyToOne(() => Folders, (folder) => folder.documents, {
     nullable: true,
     onDelete: "SET NULL",
   })
   @JoinColumn({ name: "folder_id" })
-  folderId?: Folders | null;
+  folder?: string | null;
 
   @Column({ name: "created_by" })
   createdBy!: string;
+
+  @Column({ name: "document_type" })
+  documentType!: string;
+
+  @Column({ name: "item_type_flag", default: "D" })
+  itemTypeFlag!: string;
 
   @CreateDateColumn({ name: "created_at" })
   createdAt!: Date;

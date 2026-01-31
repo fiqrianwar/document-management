@@ -2,6 +2,7 @@ import { Folders } from "../folders/folders.entity";
 
 export interface CreateDocumentDto {
   name: string;
-  folderId?: Folders | null;
+  folderId?: string | null;
   createdBy: string;
+  documentType: string;
 }
