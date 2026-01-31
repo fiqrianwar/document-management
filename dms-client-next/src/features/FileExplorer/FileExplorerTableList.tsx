@@ -1,7 +1,7 @@
 import { Table } from "@/components/ui";
 import { TableCellData } from "@/components/ui/Table/types";
 
-const HomeTableList = ({
+const FileExplorerTableList = ({
   tableBody,
 }: {
   tableBody: Array<{ id: string; cells: Array<TableCellData> }>;
@@ -15,4 +15,4 @@ const HomeTableList = ({
   );
 };
 
-export default HomeTableList;
+export default FileExplorerTableList;

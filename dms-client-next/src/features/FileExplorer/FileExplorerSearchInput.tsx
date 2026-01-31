@@ -1,7 +1,7 @@
 import { SearchIcon } from "lucide-react";
 import { InputIcon } from "@/components/ui";
 
-const HomeSearchInput = () => {
+const FileExplorerSearchInput = () => {
   return (
     <div>
       <InputIcon
@@ -12,4 +12,4 @@ const HomeSearchInput = () => {
   );
 };
 
-export default HomeSearchInput;
+export default FileExplorerSearchInput;

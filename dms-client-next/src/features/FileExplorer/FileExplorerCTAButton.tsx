@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui";
 import { ArrowUpToLine, Plus } from "lucide-react";
-import { PropsHomeCTAButton } from "./types";
+import { PropsFileExplorerCTAButton } from "./types";
 
-const HomeCTAButton: React.FC<PropsHomeCTAButton> = ({ typeCTA, onClick }) => {
+const FileExplorerCTAButton: React.FC<PropsFileExplorerCTAButton> = ({
+  typeCTA,
+  onClick,
+}) => {
   const config = {
     "upload-files": {
       label: "Upload Files",
@@ -30,4 +33,4 @@ const HomeCTAButton: React.FC<PropsHomeCTAButton> = ({ typeCTA, onClick }) => {
   );
 };
 
-export default HomeCTAButton;
+export default FileExplorerCTAButton;

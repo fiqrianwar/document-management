@@ -17,6 +17,8 @@ export type TItemDocuments = {
 export type TPayloadDocuments = {
   name: string;
   createdBy: string;
+  documentType: string;
+  folderId?: string | null;
 };
 
 export type TResponsesDocuments = ApiResponse<TItemDocuments[]>;

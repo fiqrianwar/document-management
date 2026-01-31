@@ -1,28 +1,30 @@
 "use client";
 import { DialogForm, Input } from "@/components/ui";
-import {
-  documentsService,
-  useFetchAllDocuments,
-} from "@/services/documents/documents";
+import { documentsService } from "@/services/documents/documents";
+import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
+import { foldersService } from "@/services/folders/folders";
 
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export type TypeRef = {
-  handleOpenModal: (type: string) => void;
+  handleOpenModal: (type: string, params?: string | null) => void;
 };
 
 type FormValues = {
   name: string;
   createdBy?: string;
   documentType?: string;
+  folderId?: string;
+  parentId?: string;
 };
 
-const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
-  const { mutate } = useFetchAllDocuments();
-
+const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState("");
+  const [paramsPath, setParamsPath] = useState<string | null>(null);
+
+  const { mutate } = useFetchFileExplorer(paramsPath ? paramsPath : null);
 
   const {
     register,
@@ -31,8 +33,9 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const handleOpenModal = (type: string) => {
+  const handleOpenModal = (type: string, params?: string | null) => {
     setDialogType(type);
+    setParamsPath(params ? (params as string) : null);
     setOpenDialog(true);
   };
 
@@ -48,7 +51,21 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
   const fieldTitle = dialogType === "upload-files" ? "Document" : "Folder";
 
   const onSubmit = async (data: FormValues) => {
-    await documentsService.create(data);
+    if (dialogType === "upload-files") {
+      await documentsService.create({
+        name: data.name,
+        createdBy: data.createdBy,
+        documentType: data.documentType,
+        folderId: paramsPath ? paramsPath : null,
+      });
+    } else {
+      await foldersService.create({
+        name: data.name,
+        createdBy: data.createdBy,
+        parentId: paramsPath ? paramsPath : null,
+      });
+    }
+
     reset();
     mutate();
     setOpenDialog(false);
@@ -67,27 +84,27 @@ const HomeDialogForm = forwardRef<TypeRef>((_, ref) => {
           <Input {...register("name", { required: "Name is required" })} />
         </div>
 
-        <div className="space-y-2">
-          <h1 className="font-medium">Created By</h1>
-          <Input
-            {...register("createdBy", { required: "Created By is required" })}
-          />
-        </div>
-
-        {/* {dialogType === "upload-files" && (
+        {dialogType === "upload-files" && (
           <div className="space-y-2">
-            <h1 className="font-medium">Type File</h1>
+            <h1 className="font-medium">Type Documents</h1>
             <Input
               {...register("documentType", {
                 required: "Document Type is required",
               })}
             />
           </div>
-        )} */}
+        )}
+
+        <div className="space-y-2">
+          <h1 className="font-medium">Created By</h1>
+          <Input
+            {...register("createdBy", { required: "Created By is required" })}
+          />
+        </div>
       </div>
     </DialogForm>
   );
 });
 
-HomeDialogForm.displayName = "HomeDialogForm";
-export default HomeDialogForm;
+FileExplorerDialogForm.displayName = "FileExplorerDialogForm";
+export default FileExplorerDialogForm;

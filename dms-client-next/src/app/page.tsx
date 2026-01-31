@@ -1,5 +1,5 @@
-import { Home as HomeFeatures } from "@/features/Home";
+import { FileExplorerFeatures } from "@/features";
 
 export default function Home() {
-  return <HomeFeatures />;
+  return <FileExplorerFeatures />;
 }
