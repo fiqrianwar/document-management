@@ -36,6 +36,9 @@ export class Folders {
   @OneToMany(() => Documents, (doc) => doc.folder)
   documents!: Documents[];
 
+  @Column({ name: "created_by" })
+  createdBy!: string;
+
   @Column({ name: "item_type_flag", default: "F" })
   itemTypeFlag!: string;
 

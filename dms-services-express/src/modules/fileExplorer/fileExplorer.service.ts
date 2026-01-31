@@ -38,6 +38,7 @@ export class ExplorerService {
       id: f.id,
       name: f.name,
       itemTypeFlag: "F",
+      createdBy: f.createdBy,
       parentId: f.parentId,
       createdAt: f.createdAt,
     }));
@@ -46,6 +47,7 @@ export class ExplorerService {
       id: d.id,
       name: d.name,
       itemTypeFlag: "D",
+      createdBy: d.createdBy,
       parentId: d.folderId,
       createdAt: d.createdAt,
     }));

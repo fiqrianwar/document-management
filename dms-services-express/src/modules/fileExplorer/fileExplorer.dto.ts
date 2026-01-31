@@ -16,6 +16,7 @@ export interface ExplorerItemDto {
   id: string;
   name: string;
   itemTypeFlag: ExplorerItemTypeFlag;
+  createdBy: string;
   parentId?: string | null;
   createdAt: Date;
 }
