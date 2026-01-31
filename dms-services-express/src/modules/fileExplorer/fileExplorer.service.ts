@@ -1,21 +1,36 @@
 import { AppDataSource } from "../../config/data-source";
 import { Documents } from "../documents/documents.entity";
 import { Folders } from "../folders/folders.entity";
-import { ExplorerItemDto } from "./fileExplorer.dto";
-import { IsNull } from "typeorm";
+import { ExplorerFilter, ExplorerItemDto } from "./fileExplorer.dto";
+import { FindOptionsWhere, IsNull, Like } from "typeorm";
 
 export class ExplorerService {
-  async getByParent(parentId: string | null): Promise<ExplorerItemDto[]> {
+  async getByParent(filter: ExplorerFilter): Promise<ExplorerItemDto[]> {
     const folderRepo = AppDataSource.getRepository(Folders);
     const documentRepo = AppDataSource.getRepository(Documents);
 
+    const { parentId, search } = filter;
+
+    const folderWhere: FindOptionsWhere<Folders> = {
+      parentId: parentId ?? IsNull(),
+    };
+
+    const documentWhere: FindOptionsWhere<Documents> = {
+      folderId: parentId ?? IsNull(),
+    };
+
+    if (search) {
+      folderWhere.name = Like(`%${search}%`);
+      documentWhere.name = Like(`%${search}%`);
+    }
+
     const folders = await folderRepo.find({
-      where: parentId ? { parentId } : { parentId: IsNull() },
+      where: folderWhere,
       order: { createdAt: "ASC" },
     });
 
     const documents = await documentRepo.find({
-      where: parentId ? { folderId: parentId } : { folderId: IsNull() },
+      where: documentWhere,
       order: { createdAt: "ASC" },
     });
 
