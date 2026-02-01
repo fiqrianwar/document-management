@@ -25,3 +25,9 @@ export type PropsFileExplorerTableList = {
   data: TResponsesFileExplorer | undefined;
   isLoading: boolean;
 };
+
+export type FormValues = {
+  name: string;
+  createdBy?: string;
+  documentType?: string;
+};

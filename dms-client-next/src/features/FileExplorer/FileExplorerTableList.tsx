@@ -1,31 +1,24 @@
 import { Table, TableEmpty } from "@/components/ui";
 import { ItemTypeFlag } from "@/constants/enum";
 import { FileText, Folder } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { PropsFileExplorerTableList } from "./types";
 
 const FileExplorerTableList = ({
   isLoading,
   data,
 }: PropsFileExplorerTableList) => {
-  const headerTable = ["Name", "Created by", "Date", "File Size"];
-
-  const router = useRouter();
-  const navigationDirect = useCallback(
-    (item: string) => {
-      router.push(`/${item}`);
-    },
-    [router],
-  );
+  const tableHeaders = ["Name", "Created by", "Date", "File Size"];
 
   const tableBodyData = useMemo(() => {
-    return (
-      data?.data.map(({ id, createdAt, createdBy, itemTypeFlag, name }) => ({
-        id: id,
+    if (!data?.data) return [];
+
+    return data.data.map(
+      ({ id, createdAt, createdBy, itemTypeFlag, name }) => ({
+        id,
         cells: [
           {
-            id: id,
+            id,
             title: (
               <div className="flex gap-2 items-center">
                 {itemTypeFlag === ItemTypeFlag.FOLDERS ? (
@@ -33,16 +26,12 @@ const FileExplorerTableList = ({
                 ) : (
                   <FileText color="#75a3ff" />
                 )}
-
                 <h1>{name}</h1>
               </div>
             ),
-
-            ...(itemTypeFlag === ItemTypeFlag.FOLDERS
-              ? {
-                  directionLink: `/${id}`,
-                }
-              : {}),
+            ...(itemTypeFlag === ItemTypeFlag.FOLDERS && {
+              directionLink: `/${id}`,
+            }),
           },
           {
             id: `${id}-createdBy`,
@@ -54,23 +43,29 @@ const FileExplorerTableList = ({
           },
           {
             id: `${id}-fileSize`,
-            title: <span>{itemTypeFlag === "F" ? "-" : "1 KB"}</span>,
+            title: (
+              <span>
+                {itemTypeFlag === ItemTypeFlag.FOLDERS ? "-" : "1 KB"}
+              </span>
+            ),
           },
         ],
-      })) ?? []
+      }),
     );
-  }, [data?.data]);
+  }, [data]);
+
+  const hasData = data?.data?.length !== 0;
 
   return (
     <div className="shadow-xl my-5">
-      {data?.data?.length !== 0 ? (
+      {hasData ? (
         <Table
-          tableHeader={headerTable}
+          tableHeader={tableHeaders}
           tableBody={tableBodyData}
           isLoading={isLoading}
         />
       ) : (
-        <TableEmpty tableHeader={headerTable} />
+        <TableEmpty tableHeader={tableHeaders} />
       )}
     </div>
   );

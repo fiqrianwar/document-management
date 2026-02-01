@@ -1,30 +1,28 @@
 "use client";
 
+import { useRef } from "react";
+import Link from "next/link";
+
 import { PageContainer } from "@/components/layout";
 import FileExplorerTableList from "./FileExplorerTableList";
 import FileExplorerSearchInput from "./FileExplorerSearchInput";
 import FileExplorerCTAButton from "./FileExplorerCTAButton";
-import { useRef, useState } from "react";
 import FileExplorerDialogForm from "./FileExplorerDialogForm";
-import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
-import useDebounce from "@/hooks/useDebounce";
 import FileExplorerError from "./FileExplorerError";
-import Link from "next/link";
+
 import { TypeRef } from "./types";
+import { useFileExplorer } from "./hooks/useFileExplorer";
 
 const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
-  const paramsFolder = params?.folderPath;
+  const folderPath = params?.folderPath;
 
-  const [search, setSearch] = useState("");
+  const { setSearch, data, isLoading, error } = useFileExplorer(folderPath);
 
-  const debouncedQuery = useDebounce(search, 300);
+  const refModal = useRef<TypeRef>(null);
 
-  const { data, isLoading, error } = useFetchFileExplorer(
-    paramsFolder ? paramsFolder : null,
-    debouncedQuery,
-  );
-
-  const refModal = useRef<TypeRef>(null!);
+  const handleOpenModal = (type: "upload-files" | "add-folder") => {
+    refModal.current?.handleOpenModal(type, folderPath);
+  };
 
   return (
     <PageContainer>
@@ -39,22 +37,17 @@ const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
                   </h1>
                 </Link>
               </div>
-
               <FileExplorerSearchInput setSearch={setSearch} />
             </div>
+
             <div className="space-y-4 md:flex md:gap-3">
               <FileExplorerCTAButton
                 typeCTA="upload-files"
-                onClick={() =>
-                  refModal.current.handleOpenModal("upload-files", paramsFolder)
-                }
+                onClick={() => handleOpenModal("upload-files")}
               />
-
               <FileExplorerCTAButton
                 typeCTA="add-folder"
-                onClick={() =>
-                  refModal.current.handleOpenModal("add-folder", paramsFolder)
-                }
+                onClick={() => handleOpenModal("add-folder")}
               />
             </div>
           </div>

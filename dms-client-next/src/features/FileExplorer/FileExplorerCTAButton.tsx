@@ -2,10 +2,10 @@ import { Button } from "@/components/ui";
 import { ArrowUpToLine, Plus } from "lucide-react";
 import { PropsFileExplorerCTAButton } from "./types";
 
-const FileExplorerCTAButton: React.FC<PropsFileExplorerCTAButton> = ({
+const FileExplorerCTAButton = ({
   typeCTA,
   onClick,
-}) => {
+}: PropsFileExplorerCTAButton) => {
   const config = {
     "upload-files": {
       label: "Upload Files",

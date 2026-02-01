@@ -1,6 +1,5 @@
 "use client";
 import { DialogError } from "@/components/ui";
-import React from "react";
 
 import { useRouter } from "next/navigation";
 import { PropsFileExplorerError } from "./types";

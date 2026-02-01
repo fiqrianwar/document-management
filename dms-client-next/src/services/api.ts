@@ -2,7 +2,7 @@ import { NETWORK_ERROR, UNEXPECTED_ERROR } from "@/constants/messages";
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001/api",
   headers: {
     "Content-Type": "application/json",
   },

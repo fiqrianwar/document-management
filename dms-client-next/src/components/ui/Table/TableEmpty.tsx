@@ -25,8 +25,8 @@ const TableEmpty = ({ tableHeader }: { tableHeader: string[] }) => {
         <div className="py-4 space-y-2">
           <h1 className="text-xl text-center font-bold">No Results</h1>
           <h1 className="text-base text-center font-medium">
-            Sorry, there are no results for this search, Please try another
-            please
+            Looks like there are no results here. Try adding your folder or
+            documents to see more.
           </h1>
         </div>
       </div>
