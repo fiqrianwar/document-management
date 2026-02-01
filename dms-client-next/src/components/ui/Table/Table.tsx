@@ -8,8 +8,11 @@ import {
 } from "@/components/primitives";
 
 import { PropsTable } from "./types";
+import { SkeletonLoader } from "../SkeltonLoader";
 
-const Table = ({ tableHeader, tableBody }: PropsTable) => {
+const Table = ({ tableHeader, tableBody, isLoading }: PropsTable) => {
+  const cellLoader = [0, 1, 2, 3, 4, 5, 6];
+
   return (
     <ShadcnTable>
       <TableHeader className="text-white bg-secondary">
@@ -20,21 +23,39 @@ const Table = ({ tableHeader, tableBody }: PropsTable) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tableBody.map(({ id, cells }) => (
-          <TableRow key={id}>
-            {cells.map(({ id: cellId, title, onClick }) => (
-              <TableCell
-                key={cellId}
-                onClick={onClick}
-                className={onClick ? "cursor-pointer" : ""}
-                role={onClick ? "button" : undefined}
-                tabIndex={onClick ? 0 : undefined}
-              >
-                {title}
-              </TableCell>
+        {isLoading
+          ? cellLoader.map((_, index) => (
+              <TableRow key={index}>
+                <TableCell className="flex gap-3">
+                  <SkeletonLoader className="h-5 w-7 bg-gray-300" />
+                  <SkeletonLoader className="h-5 w-46 bg-gray-300" />
+                </TableCell>
+                <TableCell>
+                  <SkeletonLoader className="h-5 w-30 bg-gray-300" />
+                </TableCell>
+                <TableCell>
+                  <SkeletonLoader className="h-5 w-26 bg-gray-300" />
+                </TableCell>
+                <TableCell>
+                  <SkeletonLoader className="h-5 w-10 bg-gray-300" />
+                </TableCell>
+              </TableRow>
+            ))
+          : tableBody.map(({ id, cells }) => (
+              <TableRow key={id}>
+                {cells.map(({ id: cellId, title, onClick }) => (
+                  <TableCell
+                    key={cellId}
+                    onClick={onClick}
+                    className={onClick ? "cursor-pointer" : ""}
+                    role={onClick ? "button" : undefined}
+                    tabIndex={onClick ? 0 : undefined}
+                  >
+                    {title}
+                  </TableCell>
+                ))}
+              </TableRow>
             ))}
-          </TableRow>
-        ))}
       </TableBody>
     </ShadcnTable>
   );

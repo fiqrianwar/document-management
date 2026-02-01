@@ -3,9 +3,11 @@ import { DialogForm, Dropdown, FieldForm, Input } from "@/components/ui";
 import { documentsService } from "@/services/documents/documents";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
 import { foldersService } from "@/services/folders/folders";
+import { ApiErrorResponse } from "@/services/type";
 
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export type TypeRef = {
   handleOpenModal: (type: string, params?: string | null) => void;
@@ -24,7 +26,9 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
   const [dialogType, setDialogType] = useState("");
   const [paramsPath, setParamsPath] = useState<string | null>(null);
 
-  const { mutate } = useFetchFileExplorer(paramsPath ? paramsPath : null);
+  const { mutate, isLoading } = useFetchFileExplorer(
+    paramsPath ? paramsPath : null,
+  );
 
   const dropdownData = [
     {
@@ -36,8 +40,16 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
       name: "PDF",
     },
     {
-      value: "word",
-      name: "WORD",
+      value: "docx",
+      name: "DOCX",
+    },
+    {
+      value: "xlsx",
+      name: "XLSX",
+    },
+    {
+      value: "txt",
+      name: "TXT",
     },
   ];
 
@@ -66,24 +78,37 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
   const fieldTitle = dialogType === "upload-files" ? "Document" : "Folder";
 
   const onSubmit = async (data: FormValues) => {
-    if (dialogType === "upload-files") {
-      await documentsService.create({
-        name: data.name,
-        createdBy: data.createdBy,
-        documentType: data.documentType,
-        folderId: paramsPath ? paramsPath : null,
-      });
-    } else {
-      await foldersService.create({
-        name: data.name,
-        createdBy: data.createdBy,
-        parentId: paramsPath ? paramsPath : null,
+    try {
+      if (dialogType === "upload-files") {
+        const resultDocument = await documentsService.create({
+          name: data.name,
+          createdBy: data.createdBy,
+          documentType: data.documentType,
+          folderId: paramsPath ? paramsPath : null,
+        });
+        await toast.success(resultDocument?.message, {
+          position: "top-center",
+        });
+      } else {
+        const resultFolders = await foldersService.create({
+          name: data.name,
+          createdBy: data.createdBy,
+          parentId: paramsPath ? paramsPath : null,
+        });
+        await toast.success(resultFolders?.message, {
+          position: "top-center",
+        });
+      }
+
+      setOpenDialog(isLoading);
+      mutate();
+      reset();
+    } catch (e) {
+      const error = e as ApiErrorResponse;
+      await toast.error(error?.message, {
+        position: "top-center",
       });
     }
-
-    reset();
-    mutate();
-    setOpenDialog(false);
   };
 
   return (
@@ -91,7 +116,8 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
       onSubmit={handleSubmit(onSubmit)}
       dialogTitle={dialogTitle}
       open={openDialog}
-      onOpenChange={() => setOpenDialog(false)}
+      isLoading={isLoading}
+      onOpenChange={() => setOpenDialog(isLoading ? true : false)}
     >
       <div className="space-y-5 p-4">
         <div className="space-y-2">

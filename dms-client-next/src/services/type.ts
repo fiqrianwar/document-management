@@ -4,3 +4,9 @@ export type ApiResponse<T> = {
   message?: string;
   data: T;
 };
+
+export type ApiErrorResponse = {
+  success: boolean;
+  statusCode: number;
+  message?: string;
+};

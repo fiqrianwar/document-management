@@ -16,11 +16,12 @@ const DialogForm = ({
   children,
   dialogTitle,
   onSubmit,
+  isLoading,
   ...props
 }: PropsDialogForm & React.ComponentProps<typeof DialogPrimitive.Root>) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="sm:max-w-106.25">
+      <DialogContent className="sm:max-w-106.25" showCloseButton={!isLoading}>
         <form onSubmit={onSubmit}>
           <DialogHeader>
             <DialogTitle className="font-bold">{dialogTitle}</DialogTitle>
@@ -30,11 +31,17 @@ const DialogForm = ({
           <DialogFooter>
             <div>
               <DialogClose asChild>
-                <Button variant="outline" label="cancel" />
+                <Button variant="outline" label="cancel" disabled={isLoading} />
               </DialogClose>
             </div>
             <div>
-              <Button variant="default" type="submit" label="Save changes" />
+              <Button
+                variant="default"
+                type="submit"
+                label="Save changes"
+                disabled={isLoading}
+                isLoading={isLoading}
+              />
             </div>
           </DialogFooter>
         </form>

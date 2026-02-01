@@ -10,4 +10,5 @@ export type PropsTable = {
     id: string;
     cells: TableCellData[];
   }>;
+  isLoading?: boolean;
 };

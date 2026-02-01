@@ -8,4 +8,5 @@ export type PropsButton = {
     | "secondary"
     | "ghost";
   icon?: React.ReactNode;
+  isLoading?: boolean;
 };

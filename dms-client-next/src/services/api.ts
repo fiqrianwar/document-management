@@ -14,6 +14,7 @@ api.interceptors.response.use(
 
     if (!error.response) {
       return Promise.reject({
+        status: true,
         message: "Network error. Please try again.",
       });
     }

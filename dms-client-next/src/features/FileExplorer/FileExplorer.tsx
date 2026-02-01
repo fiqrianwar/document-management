@@ -1,22 +1,19 @@
 "use client";
 
 import { PageContainer } from "@/components/layout";
-
 import FileExplorerTableList from "./FileExplorerTableList";
 import FileExplorerSearchInput from "./FileExplorerSearchInput";
 import FileExplorerCTAButton from "./FileExplorerCTAButton";
-import { FileText, Folder } from "lucide-react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import FileExplorerDialogForm, { TypeRef } from "./FileExplorerDialogForm";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
-import { useRouter } from "next/navigation";
 import useDebounce from "@/hooks/useDebounce";
+import FileExplorerError from "./FileExplorerError";
 
 const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
   const paramsFolder = params?.folderPath;
 
   const [search, setSearch] = useState("");
-  console.log(search);
 
   const debouncedQuery = useDebounce(search, 300);
 
@@ -24,55 +21,6 @@ const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
     paramsFolder ? paramsFolder : null,
     debouncedQuery,
   );
-
-  const router = useRouter();
-
-  const navigationDirect = useCallback(
-    (item: string) => {
-      router.push(`/${item}`);
-    },
-    [router],
-  );
-
-  const transformData = useMemo(() => {
-    return (
-      data?.data.map(({ id, createdAt, createdBy, itemTypeFlag, name }) => ({
-        id: id,
-        cells: [
-          {
-            id: id,
-            title: (
-              <div className="flex gap-2 items-center">
-                {itemTypeFlag === "F" ? (
-                  <Folder color="#f7ac55" />
-                ) : (
-                  <FileText color="#75a3ff" />
-                )}
-
-                <h1>{name}</h1>
-              </div>
-            ),
-
-            ...(itemTypeFlag === "F"
-              ? {
-                  onClick: () => {
-                    navigationDirect(id);
-                  },
-                }
-              : {}),
-          },
-          {
-            id: `${id}-createdBy`,
-            title: <span>{createdBy}</span>,
-          },
-          {
-            id: `${id}-createdAt`,
-            title: <span>{new Date(createdAt).toLocaleDateString()}</span>,
-          },
-        ],
-      })) ?? []
-    );
-  }, [data?.data, navigationDirect]);
 
   const refModal = useRef<TypeRef>(null!);
 
@@ -102,11 +50,12 @@ const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
             </div>
           </div>
 
-          <FileExplorerTableList tableBody={transformData} />
+          <FileExplorerTableList data={data} isLoading={isLoading} />
         </div>
       </div>
 
       <FileExplorerDialogForm ref={refModal} />
+      <FileExplorerError error={error} />
     </PageContainer>
   );
 };
