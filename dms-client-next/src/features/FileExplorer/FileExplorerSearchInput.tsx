@@ -1,12 +1,11 @@
 import { SearchIcon } from "lucide-react";
 import { InputIcon } from "@/components/ui";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent } from "react";
+import { PropsFileExplorerSearchInput } from "./types";
 
 const FileExplorerSearchInput = ({
   setSearch,
-}: {
-  setSearch: Dispatch<SetStateAction<string>>;
-}) => {
+}: PropsFileExplorerSearchInput) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value.trim() || "");
   };

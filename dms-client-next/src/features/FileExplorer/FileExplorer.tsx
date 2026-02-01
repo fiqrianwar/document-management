@@ -5,11 +5,12 @@ import FileExplorerTableList from "./FileExplorerTableList";
 import FileExplorerSearchInput from "./FileExplorerSearchInput";
 import FileExplorerCTAButton from "./FileExplorerCTAButton";
 import { useRef, useState } from "react";
-import FileExplorerDialogForm, { TypeRef } from "./FileExplorerDialogForm";
+import FileExplorerDialogForm from "./FileExplorerDialogForm";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
 import useDebounce from "@/hooks/useDebounce";
 import FileExplorerError from "./FileExplorerError";
 import Link from "next/link";
+import { TypeRef } from "./types";
 
 const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
   const paramsFolder = params?.folderPath;

@@ -6,19 +6,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/primitives";
-import React from "react";
+
 import { Button } from "../Button";
 import { RotateCcw, TriangleAlert } from "lucide-react";
+import { PropsDialogError } from "./types";
 
 const DialogError = ({
   error,
   errorMessage = "Network error. Please try again.",
   onClick,
-}: {
-  error: boolean;
-  errorMessage: string;
-  onClick: () => void;
-}) => {
+}: PropsDialogError) => {
   return (
     <Dialog open={error}>
       <DialogContent className="sm:max-w-106.25" showCloseButton={false}>

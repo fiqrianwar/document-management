@@ -3,15 +3,9 @@ import { DialogError } from "@/components/ui";
 import React from "react";
 
 import { useRouter } from "next/navigation";
+import { PropsFileExplorerError } from "./types";
 
-const FileExplorerError = ({
-  error,
-}: {
-  error: {
-    status: boolean;
-    message: string;
-  };
-}) => {
+const FileExplorerError = ({ error }: PropsFileExplorerError) => {
   const router = useRouter();
 
   const handleRestart = () => {

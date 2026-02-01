@@ -1,23 +1,17 @@
-import React from "react";
 import {
   FieldDescription,
   FieldLabel,
-  fieldVariants,
   Field as ShadcnField,
 } from "@/components/primitives";
-import { VariantProps } from "class-variance-authority";
+
+import { PropsFieldForm } from "./types";
 
 const FieldForm = ({
   nameField,
   descriptionField,
   children,
   error,
-}: {
-  nameField: string;
-  descriptionField?: string;
-  error: boolean;
-  children: React.ReactNode;
-}) => {
+}: PropsFieldForm) => {
   return (
     <ShadcnField data-invalid={error}>
       <FieldLabel htmlFor="input-invalid">{nameField}</FieldLabel>

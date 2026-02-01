@@ -8,10 +8,7 @@ import { ApiErrorResponse } from "@/services/type";
 import { forwardRef, useImperativeHandle, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-export type TypeRef = {
-  handleOpenModal: (type: string, params?: string | null) => void;
-};
+import { TypeRef } from "./types";
 
 type FormValues = {
   name: string;

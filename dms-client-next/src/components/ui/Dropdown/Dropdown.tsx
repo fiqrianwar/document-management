@@ -1,16 +1,6 @@
 import { NativeSelect, NativeSelectOption } from "@/components/primitives";
 import React from "react";
-
-type NativeSelectProps = Omit<React.ComponentProps<"select">, "size"> & {
-  size?: "sm" | "default";
-};
-
-type PropsDropdown = {
-  itemDropdown: Array<{
-    value: string;
-    name: string;
-  }>;
-};
+import { NativeSelectProps, PropsDropdown } from "./types";
 
 const Dropdown = ({
   itemDropdown,

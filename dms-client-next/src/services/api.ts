@@ -11,8 +11,6 @@ export const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Network error
-
     if (!error.response) {
       return Promise.reject({
         status: true,

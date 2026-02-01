@@ -6,3 +6,9 @@ export type PropsDialogForm = {
   isLoading?: boolean;
   onSubmit: React.SubmitEventHandler<HTMLFormElement>;
 };
+
+export type PropsDialogError = {
+  error: boolean;
+  errorMessage: string;
+  onClick: () => void;
+};

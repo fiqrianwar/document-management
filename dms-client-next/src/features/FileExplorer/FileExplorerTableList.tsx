@@ -1,17 +1,14 @@
 import { Table, TableEmpty } from "@/components/ui";
 import { ItemTypeFlag } from "@/constants/enum";
-import { TResponsesFileExplorer } from "@/services/fileExplorer/type";
 import { FileText, Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
+import { PropsFileExplorerTableList } from "./types";
 
 const FileExplorerTableList = ({
   isLoading,
   data,
-}: {
-  data: TResponsesFileExplorer | undefined;
-  isLoading: boolean;
-}) => {
+}: PropsFileExplorerTableList) => {
   const headerTable = ["Name", "Created by", "Date", "File Size"];
 
   const router = useRouter();

@@ -3,11 +3,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/primitives";
-import { ReactNode } from "react";
-
-export type InputIconProps = {
-  icon: ReactNode;
-};
+import { InputIconProps } from "./types";
 
 const InputIcon = ({
   icon,
