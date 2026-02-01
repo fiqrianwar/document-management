@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { AppError } from "../utils/app-error";
+import { INTERNAL_SERVER_ERROR } from "../constants/messages";
 
 export function errorMiddleware(
   err: Error,
@@ -19,6 +20,6 @@ export function errorMiddleware(
 
   return res.status(500).json({
     success: false,
-    message: "Internal server error",
+    message: INTERNAL_SERVER_ERROR,
   });
 }

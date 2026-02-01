@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { success } from "../../utils/responses";
 import { ExplorerService } from "./fileExplorer.service";
 import { ExplorerQuery } from "./fileExplorer.dto";
+import { SUCCESS_RETRIEVED_FILE_EXPLORER } from "../../constants/messages";
 
 const service = new ExplorerService();
 
@@ -21,6 +22,6 @@ export class FileExplorerController {
       search,
     });
 
-    return success(res, "File Explorer retrieved", items, null, 200);
+    return success(res, SUCCESS_RETRIEVED_FILE_EXPLORER, items, null, 200);
   };
 }

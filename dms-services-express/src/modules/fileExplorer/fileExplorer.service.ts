@@ -1,4 +1,6 @@
 import { AppDataSource } from "../../config/data-source";
+import { FileTypeFlag } from "../../constants/enums";
+import { Helper } from "../../utils/helper";
 import { Documents } from "../documents/documents.entity";
 import { Folders } from "../folders/folders.entity";
 import { ExplorerFilter, ExplorerItemDto } from "./fileExplorer.dto";
@@ -37,20 +39,29 @@ export class ExplorerService {
     const folderItems: ExplorerItemDto[] = folders.map((f) => ({
       id: f.id,
       name: f.name,
-      itemTypeFlag: "F",
+      itemTypeFlag: FileTypeFlag.FOLDER,
       createdBy: f.createdBy,
       parentId: f.parentId,
-      createdAt: f.createdAt,
+      createdAt: Helper.formatDate(f.createdAt, "dd_MMM_yyyy"),
     }));
 
-    const documentItems: ExplorerItemDto[] = documents.map((d) => ({
-      id: d.id,
-      name: d.name,
-      itemTypeFlag: "D",
-      createdBy: d.createdBy,
-      parentId: d.folderId,
-      createdAt: d.createdAt,
-    }));
+    const documentItems: ExplorerItemDto[] = documents.map((d) => {
+      const formattedName = d.name
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join("_");
+
+      const combined = `${Helper.formatDate(d.createdAt, "yyyy_mm_dd")}_${formattedName}.${d.documentType}`;
+
+      return {
+        id: d.id,
+        name: combined,
+        itemTypeFlag: FileTypeFlag.DOCUMENT,
+        createdBy: d.createdBy,
+        parentId: d.folderId,
+        createdAt: Helper.formatDate(d.createdAt, "dd_MMM_yyyy"),
+      };
+    });
 
     return [...folderItems, ...documentItems];
   }
