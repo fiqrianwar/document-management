@@ -9,6 +9,7 @@ import {
 
 import { PropsTable } from "./types";
 import { SkeletonLoader } from "../SkeltonLoader";
+import Link from "next/link";
 
 const Table = ({ tableHeader, tableBody, isLoading }: PropsTable) => {
   const cellLoader = [0, 1, 2, 3, 4, 5, 6];
@@ -43,17 +44,18 @@ const Table = ({ tableHeader, tableBody, isLoading }: PropsTable) => {
             ))
           : tableBody.map(({ id, cells }) => (
               <TableRow key={id}>
-                {cells.map(({ id: cellId, title, onClick }) => (
-                  <TableCell
-                    key={cellId}
-                    onClick={onClick}
-                    className={onClick ? "cursor-pointer" : ""}
-                    role={onClick ? "button" : undefined}
-                    tabIndex={onClick ? 0 : undefined}
-                  >
-                    {title}
-                  </TableCell>
-                ))}
+                {cells.map(({ id: cellId, title, directionLink }) =>
+                  directionLink ? (
+                    <TableCell
+                      key={cellId}
+                      className={directionLink ? "cursor-pointer" : ""}
+                    >
+                      <Link href={directionLink}>{title}</Link>
+                    </TableCell>
+                  ) : (
+                    <TableCell key={cellId}>{title}</TableCell>
+                  ),
+                )}
               </TableRow>
             ))}
       </TableBody>

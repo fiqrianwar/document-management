@@ -1,4 +1,4 @@
-import { Table } from "@/components/ui";
+import { Table, TableEmpty } from "@/components/ui";
 import { TResponsesFileExplorer } from "@/services/fileExplorer/type";
 import { FileText, Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -42,9 +42,7 @@ const FileExplorerTableList = ({
 
             ...(itemTypeFlag === "F"
               ? {
-                  onClick: () => {
-                    navigationDirect(id);
-                  },
+                  directionLink: `/${id}`,
                 }
               : {}),
           },
@@ -63,15 +61,19 @@ const FileExplorerTableList = ({
         ],
       })) ?? []
     );
-  }, [data?.data, navigationDirect]);
+  }, [data?.data]);
 
   return (
     <div className="shadow-xl my-5">
-      <Table
-        tableHeader={headerTable}
-        tableBody={tableBodyData}
-        isLoading={isLoading}
-      />
+      {data?.data?.length !== 0 ? (
+        <Table
+          tableHeader={headerTable}
+          tableBody={tableBodyData}
+          isLoading={isLoading}
+        />
+      ) : (
+        <TableEmpty tableHeader={headerTable} />
+      )}
     </div>
   );
 };

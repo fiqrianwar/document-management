@@ -9,6 +9,7 @@ import FileExplorerDialogForm, { TypeRef } from "./FileExplorerDialogForm";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
 import useDebounce from "@/hooks/useDebounce";
 import FileExplorerError from "./FileExplorerError";
+import Link from "next/link";
 
 const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
   const paramsFolder = params?.folderPath;
@@ -30,7 +31,14 @@ const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
         <div className="py-5 md:py-14 space-y-4">
           <div className="space-y-4 md:flex justify-between">
             <div className="space-y-4">
-              <h1 className="text-xl font-medium">Documents</h1>
+              <div>
+                <Link href="/">
+                  <h1 className="text-xl font-medium cursor-pointer">
+                    Documents
+                  </h1>
+                </Link>
+              </div>
+
               <FileExplorerSearchInput setSearch={setSearch} />
             </div>
             <div className="space-y-4 md:flex md:gap-3">

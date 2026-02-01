@@ -1,7 +1,8 @@
 export type TableCellData = {
   id: string;
   title: React.ReactNode;
-  onClick?: () => void;
+  // onClick?: () => void;
+  directionLink?: string;
 };
 
 export type PropsTable = {
