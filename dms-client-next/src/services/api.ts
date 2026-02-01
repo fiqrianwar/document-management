@@ -1,3 +1,4 @@
+import { NETWORK_ERROR, UNEXPECTED_ERROR } from "@/constants/messages";
 import axios from "axios";
 
 export const api = axios.create({
@@ -15,7 +16,7 @@ api.interceptors.response.use(
     if (!error.response) {
       return Promise.reject({
         status: true,
-        message: "Network error. Please try again.",
+        message: NETWORK_ERROR,
       });
     }
 
@@ -23,7 +24,7 @@ api.interceptors.response.use(
 
     return Promise.reject({
       status,
-      message: data?.message || "Unexpected error",
+      message: data?.message || UNEXPECTED_ERROR,
       errors: data?.errors,
     });
   },

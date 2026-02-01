@@ -1,4 +1,5 @@
 import { Table, TableEmpty } from "@/components/ui";
+import { ItemTypeFlag } from "@/constants/enum";
 import { TResponsesFileExplorer } from "@/services/fileExplorer/type";
 import { FileText, Folder } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -30,7 +31,7 @@ const FileExplorerTableList = ({
             id: id,
             title: (
               <div className="flex gap-2 items-center">
-                {itemTypeFlag === "F" ? (
+                {itemTypeFlag === ItemTypeFlag.FOLDERS ? (
                   <Folder color="#f7ac55" />
                 ) : (
                   <FileText color="#75a3ff" />
@@ -40,7 +41,7 @@ const FileExplorerTableList = ({
               </div>
             ),
 
-            ...(itemTypeFlag === "F"
+            ...(itemTypeFlag === ItemTypeFlag.FOLDERS
               ? {
                   directionLink: `/${id}`,
                 }
