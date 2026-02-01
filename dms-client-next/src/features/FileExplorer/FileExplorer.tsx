@@ -6,16 +6,23 @@ import FileExplorerTableList from "./FileExplorerTableList";
 import FileExplorerSearchInput from "./FileExplorerSearchInput";
 import FileExplorerCTAButton from "./FileExplorerCTAButton";
 import { FileText, Folder } from "lucide-react";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import FileExplorerDialogForm, { TypeRef } from "./FileExplorerDialogForm";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
 import { useRouter } from "next/navigation";
+import useDebounce from "@/hooks/useDebounce";
 
 const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
   const paramsFolder = params?.folderPath;
 
+  const [search, setSearch] = useState("");
+  console.log(search);
+
+  const debouncedQuery = useDebounce(search, 300);
+
   const { data, isLoading, error } = useFetchFileExplorer(
     paramsFolder ? paramsFolder : null,
+    debouncedQuery,
   );
 
   const router = useRouter();
@@ -76,7 +83,7 @@ const FileExplorer = ({ params }: { params?: { folderPath?: string } }) => {
           <div className="space-y-4 md:flex justify-between">
             <div className="space-y-4">
               <h1 className="text-xl font-medium">Documents</h1>
-              <FileExplorerSearchInput />
+              <FileExplorerSearchInput setSearch={setSearch} />
             </div>
             <div className="space-y-4 md:flex md:gap-3">
               <FileExplorerCTAButton

@@ -4,10 +4,18 @@ import { TResponsesFileExplorer } from "./type";
 
 export const fileExplorerService = {};
 
-export const useFetchFileExplorer = (parentId: string | null) => {
-  const urlKey = parentId
-    ? `/fileExplorer?parentId=${parentId}`
-    : `/fileExplorer`;
+export const useFetchFileExplorer = (
+  parentId: string | null,
+  search?: string,
+) => {
+  const params = new URLSearchParams();
 
-  return useSWR<TResponsesFileExplorer>(urlKey, fetcher);
+  if (parentId !== null) params.set("parentId", parentId);
+  if (search) params.set("search", search);
+
+  const urlKey = `/fileExplorer?${params.toString()}`;
+
+  return useSWR<TResponsesFileExplorer>(urlKey, fetcher, {
+    keepPreviousData: true,
+  });
 };

@@ -1,5 +1,5 @@
 "use client";
-import { DialogForm, Input } from "@/components/ui";
+import { DialogForm, Dropdown, FieldForm, Input } from "@/components/ui";
 import { documentsService } from "@/services/documents/documents";
 import { useFetchFileExplorer } from "@/services/fileExplorer/fileExplorer";
 import { foldersService } from "@/services/folders/folders";
@@ -25,6 +25,21 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
   const [paramsPath, setParamsPath] = useState<string | null>(null);
 
   const { mutate } = useFetchFileExplorer(paramsPath ? paramsPath : null);
+
+  const dropdownData = [
+    {
+      value: "unselect-document",
+      name: "Select Document",
+    },
+    {
+      value: "pdf",
+      name: "PDF",
+    },
+    {
+      value: "word",
+      name: "WORD",
+    },
+  ];
 
   const {
     register,
@@ -80,26 +95,51 @@ const FileExplorerDialogForm = forwardRef<TypeRef>((_, ref) => {
     >
       <div className="space-y-5 p-4">
         <div className="space-y-2">
-          <h1 className="font-medium">{fieldTitle} Name</h1>
-          <Input {...register("name", { required: "Name is required" })} />
+          <FieldForm
+            error={errors.name ? true : false}
+            nameField={`${fieldTitle} Name`}
+            descriptionField={errors.name?.message}
+          >
+            <Input
+              aria-invalid={errors.name ? true : false}
+              {...register("name", { required: "Name is required" })}
+            />
+          </FieldForm>
         </div>
 
         {dialogType === "upload-files" && (
-          <div className="space-y-2">
-            <h1 className="font-medium">Type Documents</h1>
-            <Input
-              {...register("documentType", {
-                required: "Document Type is required",
-              })}
-            />
+          <div className="space-y-3">
+            <FieldForm
+              error={errors.documentType ? true : false}
+              nameField="Type Documents"
+              descriptionField={
+                errors.documentType && "Please select document type"
+              }
+            >
+              <Dropdown
+                aria-invalid={errors.documentType ? true : false}
+                {...register("documentType", {
+                  required: "Please select document type",
+                  validate: (value) => value !== "unselect-document",
+                })}
+                className="w-full"
+                itemDropdown={dropdownData}
+              />
+            </FieldForm>
           </div>
         )}
 
         <div className="space-y-2">
-          <h1 className="font-medium">Created By</h1>
-          <Input
-            {...register("createdBy", { required: "Created By is required" })}
-          />
+          <FieldForm
+            error={errors.createdBy ? true : false}
+            nameField="Created By"
+            descriptionField={errors.createdBy?.message}
+          >
+            <Input
+              aria-invalid={errors.createdBy ? true : false}
+              {...register("createdBy", { required: "Created by is required" })}
+            />
+          </FieldForm>
         </div>
       </div>
     </DialogForm>
