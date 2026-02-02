@@ -1,6 +1,6 @@
 const documentsApi = "/documents";
 const foldersApi = "/folders";
-const fileExplorerApi = "/fileExplorer";
+const fileExplorerApi = "/file-explorer";
 
 export const apiPath = {
   documentsApi,
