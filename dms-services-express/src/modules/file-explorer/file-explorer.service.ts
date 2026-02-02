@@ -3,11 +3,13 @@ import { FileTypeFlag } from "../../constants/enums";
 import { Helper } from "../../utils/helper";
 import { Documents } from "../documents/documents.entity";
 import { Folders } from "../folders/folders.entity";
-import { ExplorerFilter, ExplorerItemDto } from "./fileExplorer.dto";
+import { FileExplorerFilter, FileExplorerItemDto } from "./file-explorer.dto";
 import { FindOptionsWhere, IsNull, Like } from "typeorm";
 
-export class ExplorerService {
-  async getByParent(filter: ExplorerFilter): Promise<ExplorerItemDto[]> {
+export class FileExplorerService {
+  async getByParent(
+    filter: FileExplorerFilter,
+  ): Promise<FileExplorerItemDto[]> {
     const folderRepo = AppDataSource.getRepository(Folders);
     const documentRepo = AppDataSource.getRepository(Documents);
 
@@ -36,7 +38,7 @@ export class ExplorerService {
       order: { createdAt: "ASC" },
     });
 
-    const folderItems: ExplorerItemDto[] = folders.map((f) => ({
+    const folderItems: FileExplorerItemDto[] = folders.map((f) => ({
       id: f.id,
       name: f.name,
       itemTypeFlag: FileTypeFlag.FOLDER,
@@ -45,7 +47,7 @@ export class ExplorerService {
       createdAt: Helper.formatDate(f.createdAt, "dd_MMM_yyyy"),
     }));
 
-    const documentItems: ExplorerItemDto[] = documents.map((d) => {
+    const documentItems: FileExplorerItemDto[] = documents.map((d) => {
       const formattedName = d.name
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { FileExplorerController } from "./fileExplorer.controller";
+import { FileExplorerController } from "./file-explorer.controller";
 import { asyncHandler } from "../../middlewares/async.middleware";
 
 const router = Router();

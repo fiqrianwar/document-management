@@ -1,13 +1,16 @@
 import { Request, Response } from "express";
 import { success } from "../../utils/responses";
-import { ExplorerService } from "./fileExplorer.service";
-import { ExplorerQuery } from "./fileExplorer.dto";
+import { FileExplorerService } from "./file-explorer.service";
+import { FileExplorerQuery } from "./file-explorer.dto";
 import { SUCCESS_RETRIEVED_FILE_EXPLORER } from "../../constants/messages";
 
-const service = new ExplorerService();
+const service = new FileExplorerService();
 
 export class FileExplorerController {
-  findAll = async (req: Request<{}, {}, {}, ExplorerQuery>, res: Response) => {
+  findAll = async (
+    req: Request<{}, {}, {}, FileExplorerQuery>,
+    res: Response,
+  ) => {
     const normalize = (v?: string | string[]) =>
       !v ? undefined : Array.isArray(v) ? v[0] : v;
 
