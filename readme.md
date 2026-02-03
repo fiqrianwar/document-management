@@ -267,7 +267,7 @@ Before running this project locally, ensure you have:
 
 - Node.js (v18 or higher)
 - MySQL 8.x (running locally)
-- npm or yarn
+- npm
 
 ### Setup & Run Locally
 
